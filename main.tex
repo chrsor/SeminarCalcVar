@@ -1,0 +1,228 @@
+% 	This template is  MIT licensed.
+
+% 	Basic file to demonstrate the usage of this LaTeX template.
+% 	You can build your own paper/thesis on top of this file.
+% 	Simply adjust the document class and all metadata and start working.
+%
+\documentclass[
+	language=german, % set to english or german
+	type=seminar, % set to bachelor, master or seminar
+]{isthesis}
+
+% Graphics rendering using TikZ
+% See: https://en.wikibooks.org/wiki/LaTeX/PGF/TikZ
+\usepackage{tikz}
+% Include required TikZ libraries here, some exemplary libraries are pre-included
+\usetikzlibrary{calc}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+
+%Add your library here
+\addbibresource{library.bib}
+
+% Import acronyms
+\input{config/acronyms}
+
+% Import symbols
+\input{config/symbols}
+
+% Import custom commands
+\input{config/commands}
+
+% Document meta information
+\isthesis{
+    title={Relaxierung},
+    sub-title={Die direkte Methode für nicht-unterhalbstetige Integralfunktionale},
+    author-name={Christopher Sorg}, % Separate multiple authors with commas
+    author-email={chr.sorg@fau.de},
+    principal-supervisor={Prof. Dr. Manuel Friedrich}, % This must be a professor
+    group={Lehrstuhl für angewandte Mathematik 1 (Angewandte Analysis)},
+    group-institute={Department Mathematik},
+    studies={M.Sc. Computational and Applied Mathematics},
+    %associate-group={}, % When the thesis is done in cooperation with another chair, add it here
+    %associate-group-institute={}, % add cooperating institute or university here
+    seminar={Variationelle Probleme für Integralfunktionale}, % The title of your seminar
+    submission-date={2022-11-10}, % The date you handed in your document: Format yyyy-mm-dd
+    primary-logo={assets/fau-logo.pdf}, % Uses the FAU logo by default
+    primary-logo-height={48mm}, % Uses 16mm as default height
+    %secondary-logo={}
+    secondary-logo-height={0mm} % Uses 16mm as default height
+}
+
+
+\begin{document}
+    % Title page
+    \newcounter{savepage}
+    \maketitle
+
+	% Quote
+    % You can put an optional quote page in front of your content
+    %   \quotepage[author={Arthur C. Clarke}]{
+    %   	        Any sufficiently advanced technology is indistinguishable from magic.
+    %   }
+    \begin{abstract}
+	    % Add your abstract here:
+		In diesem Seminar werden verschiedene Aspekte der Variationsrechnung betrachtet. Diese Arbeit setzt die Grundvorlesungen Analysis 1-3, sowie Grundkenntnisse in der Theorie der geometrischen Maßtheorie und \\Funktionalanalysis voraus. Die hieraus benötigten Resultate sind im Zweifel mit passender Quelle im Anhang zu finden.\\
+		
+		Der erste Bereich beschäftigt sich mit allgemeiner Existenztheorie von Minimierern von Integralfunktionalen. Diese Seminararbeit ist Basis eines 75 minütigen Vortrags, der die Relaxierung behandelt, ein sehr wichtiges Konzept für die angewandte Analysis, da es sich mit der Frage beschäftigt, wie man im Falle von fehlender (schwacher) Unterhalbstetigkeit mit allgemeiner Existenztheorie arbeiten kann.
+		
+		%Das Buch, das Inspiration und Vorlage für diese Arbeit darstellt, ist unter \cite{Marsden}[§2,Seite 61-86;§5] zu finden. 
+	\end{abstract}
+    
+    % Table of contents
+    \tableofcontents
+
+    % List of tables (if you have tables)
+    %\listoftables
+    
+    % List of listings (if you have listings)
+	%\lstlistoflistings
+
+    % List of abbreviations (if you use acronyms)
+    %\listofabbreviations
+
+    % List of symbols (if you use symbols)
+    %\listofsymbols
+	
+	% Abstract
+	%
+	% Comment out this part, if you don't require an abstract
+
+	
+	% storing the last pagenumber
+    \setcounter{savepage}{\value{page}}
+    
+    
+    % Content
+    \begin{content}
+        % Add your content files:
+		\input{sections/01_Einf}
+		\input{sections/02_Rel}
+		\input{sections/03_YoungRel}
+    \end{content}
+    
+    \pagenumbering{Roman}
+    \setcounter{page}{\numexpr\value{savepage}}
+
+    % List of figures (if you have figures)
+    %\listoffigures
+    
+    % References
+    \references{}
+    
+    % Appendix
+\begin{appendix}
+Die folgenden Resultate sind dem Buch von Prof. Alt entnommen \cite{FunkAnaAlt}. Wir beginnen hierbei mit den 2 vermutlich wichtigsten Resultaten - neben dem Darstellungssatz von Riesz - aus der Funktionalanalysis: Der Satz von Hahn-Banach und Banach-Alaoglu:\\ 
+\pgfsetfillopacity{0.2}\colorbox{theored}{\begin{minipage}{16cm}{\textcolor{black}{\pgfsetfillopacity{1}}}
+\textbf{Satz A.1 (Hahn-Banach):} Sei \(X\) ein \(\mathbb{R}-\)Vektorraum und es gelte:
+\begin{enumerate}
+    \item \begin{equation}
+        p:X \to \mathbb{R} \text{ ist sublinear}.
+    \end{equation}
+    \item \begin{equation}
+        \text{Für einen Vektorunterraum } Y \subset X:\,f:Y \to \mathbb{R} \text{ ist linear}.
+    \end{equation}
+    \item \begin{equation}
+        \forall x \in Y:\,f(x) \le p(x).
+    \end{equation}
+\end{enumerate}
+Dann existiert eine lineare Abbildung \(F:X \to \mathbb{R}\) mit
+\begin{equation}
+    F(x)=f(x)\,\forall x \in Y\,\,\land\,\, F(x) \le p(x)\,\forall x \in X
+\end{equation}
+\end{minipage}}
+     
+\textbf{Bemerkung:} Der Satz benötigt für die gesuchte Fortsetzung das Lemma von Zorn, um zu gewährleisten, dass für eine potentiell \(\infty-\)dimensionale partiell-geordnete Menge ein maximales Element mithilfe des Auswahlaxioms existiert.\\
+
+Aus diesem Satz kann man den wichtigen Trennungssatz dann folgern:\\
+\pgfsetfillopacity{0.2}\colorbox{theored}{\begin{minipage}{16cm}{\textcolor{black}{\pgfsetfillopacity{1}}}
+\textbf{Korollar A.2 (Trennungssatz):} Sei \((X,||\cdot||)\), kurz \(X\), ein normierter Raum, \(\emptyset \neq M \subset X\) abgeschlossen und \textbf{konvex}, \(x_0 \in M^c\). Dann existiert ein \(x^* \in X^*\) (topologischer Dualraum von \(X\)) und ein \(\alpha \in \mathbb{R}\), sodass gilt:
+\begin{equation}
+    \Re (<x,x^*>) \le \alpha \,\forall x \in M \,\,\land\,\, \Re (<x_0,x^*>) > \alpha.
+\end{equation}
+\end{minipage}}
+
+\pgfsetfillopacity{0.2}\colorbox{theored}{\begin{minipage}{16cm}{\textcolor{black}{\pgfsetfillopacity{1}}}
+\textbf{Satz A.3 (Banach-Alaoglu):} Dieser Satz besitzt sowohl eine Variante für die schwache als auch die schwach*-Topologie:
+\begin{itemize}
+    \item Jeder abgeschlossene Ball in einem \textbf{reflexiven} Banachraum ist schwach kompakt.
+    \item Jeder abgeschlossene Ball in dem Dual eines normierten Raumes ist schwach* kompakt.
+\end{itemize}
+\end{minipage}}
+
+\textbf{Bemerkung:} Dieser Satz besitzt natürlich auch eine Folgenversion (dessen schwache Version wir auf Seite 11 auch benutzt haben). Aber Vorsicht: Die schwach* Version benötigt einen \textbf{seperablen} normierten Raum! Diese Zusatzannahme mag zunächst merkwürdig sein; der Grund hierfür ist aber der berüchtigte Problemverursacher \(l^{\infty}\).\\
+
+Für die Variationsrechnung ist bekanntlich die Norm-Topologie zu stark (kompakte Mengen benötigen hier Totalbeschränktheit (Verallgemeinerung des Satzes von Heine-Borel)) und wir suchen für die direkte Methode nach Unterhalbstetigkeit bezüglich der schwachen Topologie. Wir benötigen deshalb in der gesamten Existenztheorie die Annahme der Konvexität. Der Grund liegt im Mazur-Lemma zugrunde, das mithilfe der Resultate A.1, A.2 und A.3 bewiesen werden kann:\\
+\pgfsetfillopacity{0.2}\colorbox{theored}{\begin{minipage}{16cm}{\textcolor{black}{\pgfsetfillopacity{1}}}
+\textbf{Satz A.4 (Mazur):} Jede \textbf{konvexe} abgeschlossene Menge in einem normierten Raum ist auch schwach abgeschlossen.
+\end{minipage}}
+\\
+
+Maßtheoretisch sollten wir 2 Aspekte von Seite 8 und einen von Seite 9 noch genauer erklären: Was ist eigentlich ein Caratheodory-Integrand und was ist mit dem Satz von Scorza-Dragoni, sowie dem Zerlegungssatz von Jordan gemeint? Quellen hierfür sind etwas verstreut; gesammelt können die Resultate in \cite{CalcVar} gefunden werden. Der Zerlegungssatz von Jordan ist sehr schön in \cite{ElstrodtMeas}[Seite 271-274] zu finden.\\
+\pgfsetfillopacity{0.2}\colorbox{defblue}{\begin{minipage}{16cm}{\textcolor{black}{\pgfsetfillopacity{1}}}
+\textbf{Definition A.5 (Caratheodory Funktion):} Wir nennen eine Funktion \\ \(F:\Omega \times \mathbb{R}^N \times \mathbb{R}^{N \times n} \to \mathcal{X}\) mit \(\Omega \stackrel{messbar}{\subset} \mathbb{R}^n\) und metrisierbaren Raum \(\mathcal{X}\) Caratheodory Funktion, falls gilt:
+\begin{enumerate}
+\item \begin{equation}
+    F(x,\cdot, \cdot):\mathbb{R}^N \times \mathbb{R}^{N \times n} \to \mathcal{X} \text{ ist stetig f.ü. und}
+\end{equation}
+\item \begin{equation}
+    F(\cdot,y,z):\Omega \to \mathcal{X} \text{ ist messbar }\forall (y,z) \in \mathbb{R}^N \times \mathbb{R}^{N \times n}.
+\end{equation}
+\end{enumerate}
+\end{minipage}}
+
+Um den Satz von Scorza-Dragoni zu beweisen, benötigt man 2 Sätze, namentlich den Satz von Luzin und den Satz von Egorov:\\
+\pgfsetfillopacity{0.2}\colorbox{theored}{\begin{minipage}{16cm}{\textcolor{black}{\pgfsetfillopacity{1}}}
+\textbf{Satz A.6 (Luzin):} Betrachte \(\Omega \stackrel{offen}{\subset} \mathbb{R}^n\) mit \(\mathcal{L}^n(\Omega) < \infty\), einen metrisierbaren Raum \(\mathcal{X}\) und eine messbare Funktion \(f:\Omega \to \mathcal{X}\). Dann gilt:
+\begin{equation}
+    \forall \epsilon > 0\,\exists A \stackrel{kompakt}{\subset} \Omega \text{ mit } \mathcal{L}^n(A^c) < \epsilon, \text{ sodass } f_{\einschraenkung A} \text{ stetig ist}.
+\end{equation}
+\end{minipage}}
+
+\pgfsetfillopacity{0.2}\colorbox{theored}{\begin{minipage}{16cm}{\textcolor{black}{\pgfsetfillopacity{1}}}
+\textbf{Satz A.7 (Egorov):} Betrachte \(\Omega \stackrel{offen}{\subset} \mathbb{R}^n\) mit \(\mathcal{L}^n(\Omega) < \infty\), einen metrisierbaren Raum \(\mathcal{X}\) und messbare Funktionen \(f,f_k: \Omega \to \mathcal{X}\), sodass \(f_k \stackrel{k \to \infty}{\to} f\) f.ü. Dann gilt:
+\begin{equation}
+    \forall \epsilon > 0 \,\exists B \stackrel{kompakt}{\subset} \Omega \text{ mit } \mathcal{L}^n(B^c) < \epsilon, \text{ sodass } f_k \stackrel{k \to \infty}{\to} f \text{ gleichmäßig auf } B.
+\end{equation}
+\end{minipage}}
+
+Der Satz von Scorza-Dragoni kann dann hauptsächlich durch iteratives Anwenden von A.6 bewiesen werden und lautet:\\
+\pgfsetfillopacity{0.2}\colorbox{theored}{\begin{minipage}{16cm}{\textcolor{black}{\pgfsetfillopacity{1}}}
+\textbf{Satz A.8 (Scorza-Dragoni):} Betrachte \(\Omega \stackrel{offen}{\subset} \mathbb{R}^n\) mit \(\mathcal{L}^n(\Omega) < \infty\), einen metrisierbaren Raum \(\mathcal{X}\) und eine Caratheodory Funktion \(F:\Omega \times \mathbb{R}^N \to \mathcal{X}\). Dann gilt:
+\begin{equation}
+    \forall \epsilon > 0\,\exists A \stackrel{kompakt}{\subset} \Omega \text{ mit } \mathcal{L}^n(A^c) < \epsilon, \text{ sodass } F_{\einschraenkung A \times \mathbb{R}^N} \text{ stetig ist}.
+\end{equation}
+\end{minipage}}
+
+Abschließend noch der Zerlegungssatz von Jordan, der den Zerlegungssatz von Hahn verwendet:\\
+\pgfsetfillopacity{0.2}\colorbox{theored}{\begin{minipage}{16cm}{\textcolor{black}{\pgfsetfillopacity{1}}}
+\textbf{Satz A.9 (Hahn):} Sei \((X,\Sigma,\mu)\) ein Maßraum mit einem signierten Maß \(\mu: \Sigma \to \overline{\mathbb{R}}\). Dann existiert eine disjunkte Zerlegung \(X=P \cup N\) mit \(P,N \in \Sigma\) von \(X\) in eine positive Menge \(P\) und eine negative Menge \(N\).
+\end{minipage}}
+
+\pgfsetfillopacity{0.2}\colorbox{theored}{\begin{minipage}{16cm}{\textcolor{black}{\pgfsetfillopacity{1}}}
+\textbf{Satz A.10 (Jordan):} Jedes signierte Maß \(\mu\) eines Maßraums \((X,\Sigma,\mu)\) besitzt die Jordan-Zerlegung
+\begin{equation}
+    \mu = \mu^+ - \mu^-,
+\end{equation}
+wobei \(\mu^+ \perp \mu^-\) gilt.
+\end{minipage}}
+\end{appendix}
+
+    % Declaration of authorship
+    % \authorshipstatement[pagenumbering=false]
+    \authorshipstatement[pagenumbering=true]
+    % \authorshipstatement[pagenumbering=only]
+    
+    % Consent form for use of plagiarism detection software
+    % Not yet required
+    % \consentform[pagenumbering=false]
+    % \consentform[pagenumbering=true]
+    % \consentform[pagenumbering=only]
+    
+    % Bonus: Wordcount
+    % cd %FOLDER WHERE THE .tex FILES ARE IN %
+    % clear
+    % texcount -total -q -col -sum *.tex
+    
+\end{document}
